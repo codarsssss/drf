@@ -16,15 +16,18 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from apiapp.views import DataViewSet
+from apiapp.views import *
 from rest_framework import routers
 
 
-router = routers.SimpleRouter()
-router.register(r'version', DataViewSet)
+router_ver = routers.SimpleRouter()
+router_vul = routers.SimpleRouter()
+router_ver.register(r'version', DataViewSet)
+router_vul.register(r'vulnerability', VulnerabilityViewSet)
 
 
 urlpatterns = [
     path('versions/', DataViewSet.as_view({'get': "list"})),
-    path('', include(router.urls)),
+    path('', include(router_ver.urls)),
+    path('', include(router_vul.urls)),
 ]
