@@ -1,3 +1,5 @@
+from collections import OrderedDict
+
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.exceptions import ErrorDetail
@@ -43,6 +45,15 @@ class RequestTests(APITestCase):
     def test_create_and_delete(self):
         data_version = {"id": "aaaa1232", "software": "samba", "version": "1.2.3"}
         response = self.client.post("/version/", data_version)
-        print(response.data)
         response = self.client.delete(f"/version/{data_version['id']}/")
         self.assertEquals(response.status_code, 204)
+
+    def test_create_and_get_versions(self):
+        data_version = {"id": "aaaa1232", "software": "samba", "version": "1.2.3"}
+
+        response = self.client.get('/versions/')
+        self.assertEquals(response.data, [])
+
+        response = self.client.post("/version/", data_version)
+        response = self.client.get('/versions/')
+        self.assertEquals(response.data, [OrderedDict([('id', 'aaaa1232'), ('software', 'samba'), ('version', '1.2.3')])])
