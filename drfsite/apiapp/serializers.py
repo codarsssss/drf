@@ -5,4 +5,4 @@ from .models import Data
 class DataSerializer(serializers.ModelSerializer):
     class Meta:
         model = Data
-        fields = ('id', 'software', 'version')
+        fields = '__all__'
